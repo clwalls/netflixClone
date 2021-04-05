@@ -22,6 +22,8 @@ function Row({ title, fetchUrl, isLargeRow }) {
     fetchData();
   }, [fetchUrl]);
 
+  console.log(movies);
+
   /* Video play options with react-youtube*/
   const opts = {
     height: "390",
@@ -31,12 +33,14 @@ function Row({ title, fetchUrl, isLargeRow }) {
     },
   };
 
-  /* Grab youtube video using react-youtube*/
+  /* Grab youtube video using react-youtube * movie-trailer*/
   const handleClick = (movie) => {
     if (trailerUrl) {
       setTrailerUrl("");
     } else {
-      movieTrailer(movie?.name || "")
+      movieTrailer(movie?.name || movie?.original_title || "", {
+        apiKey: "dab74b47f4aaa7d1fd4a16ca76c13c20",
+      })
         .then((url) => {
           const urlParams = new URLSearchParams(new URL(url).search);
           setTrailerUrl(urlParams.get("v"));
