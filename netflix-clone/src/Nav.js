@@ -24,7 +24,7 @@ function Nav() {
       />
       <img
         className="nav_avatar"
-        src="https://pbs.twimg.com/media/DN1OYIFX0AAbOMe?format=jpg&name=small"
+        src="https://occ-0-990-1327.1.nflxso.net/dnm/api/v6/K6hjPJd6cR6FpVELC5Pd6ovHRSk/AAAABUCZYfPbupvQjzSa3egePk8TFNDy2A_w15DEAq50IqW8MYmOtmbWwN4Txem7mgNYEMPJ1BY6uasiIJQ8JeFO3EU.png?r=b97"
         alt="Account Icon"
       />
     </div>
