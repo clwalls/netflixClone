@@ -5,6 +5,7 @@ import YouTube from "react-youtube";
 import movieTrailer from "movie-trailer";
 
 const base_URL = "https://image.tmdb.org/t/p/original";
+const API_KEY = "dab74b47f4aaa7d1fd4a16ca76c13c20";
 
 function Row({ title, fetchUrl, isLargeRow }) {
   const [movies, setMovies] = useState([]);
@@ -22,7 +23,30 @@ function Row({ title, fetchUrl, isLargeRow }) {
     fetchData();
   }, [fetchUrl]);
 
-  console.log(movies);
+  //console.log(movies);
+
+  async function getYoutubeId(movie) {
+    try {
+      const response = await axios.get(
+        `tv/${movie?.id}/videos?api_key=${API_KEY}`
+      );
+      if (!response) {
+        return null;
+      }
+      /* console.log(response.data.results.length);
+      console.log(response.data.results); */
+
+      var i;
+      for (i = 0; i < response.data.results.length; i++) {
+        if (response.data.results[i].type === "Trailer") {
+          //console.log(response.data.results[i].key);
+          return `https://www.youtube.com/watch?v=${response.data.results[i].key}`;
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   /* Video play options with react-youtube*/
   const opts = {
@@ -38,14 +62,28 @@ function Row({ title, fetchUrl, isLargeRow }) {
     if (trailerUrl) {
       setTrailerUrl("");
     } else {
-      movieTrailer(movie?.name || movie?.original_title || "", {
-        apiKey: "dab74b47f4aaa7d1fd4a16ca76c13c20",
-      })
-        .then((url) => {
+      if (!movie.hasOwnProperty("video")) {
+        // this means we ask TMDB for youtube video key
+        getYoutubeId(movie).then((url) => {
+          if (!url) {
+            return null;
+          }
           const urlParams = new URLSearchParams(new URL(url).search);
+          //console.log(urlParams.get("v"));
           setTrailerUrl(urlParams.get("v"));
-        })
-        .catch((error) => console.log(error));
+        });
+      } else {
+        movieTrailer(movie?.name || movie?.original_title || "", {
+          apiKey: "dab74b47f4aaa7d1fd4a16ca76c13c20",
+        }) // add an OR and call TMDB here with movie?.id/videos?api_key###
+          .then((url) => {
+            //console.log(url);
+            const urlParams = new URLSearchParams(new URL(url).search);
+            //console.log(urlParams.get("v"));
+            setTrailerUrl(urlParams.get("v"));
+          })
+          .catch((error) => console.log(error));
+      }
     }
   };
 
