@@ -23,8 +23,6 @@ function Row({ title, fetchUrl, isLargeRow }) {
     fetchData();
   }, [fetchUrl]);
 
-  //console.log(movies);
-
   async function getYoutubeId(movie) {
     try {
       const response = await axios.get(
@@ -33,14 +31,11 @@ function Row({ title, fetchUrl, isLargeRow }) {
       if (!response) {
         return null;
       }
-      /* console.log(response.data.results.length);
-      console.log(response.data.results); */
 
       var i;
       var obj = response.data.results;
       for (i = 0; i < obj.length; i++) {
         if (obj[i].type === "Trailer" && obj[i].iso_639_1 === "en") {
-          //console.log(response.data.results[i].key);
           return `https://www.youtube.com/watch?v=${obj[i].key}`;
         }
       }
@@ -70,7 +65,6 @@ function Row({ title, fetchUrl, isLargeRow }) {
             return null;
           }
           const urlParams = new URLSearchParams(new URL(url).search);
-          //console.log(urlParams.get("v"));
           setTrailerUrl(urlParams.get("v"));
         });
       } else {
@@ -78,9 +72,7 @@ function Row({ title, fetchUrl, isLargeRow }) {
           apiKey: "dab74b47f4aaa7d1fd4a16ca76c13c20",
         }) // add an OR and call TMDB here with movie?.id/videos?api_key###
           .then((url) => {
-            //console.log(url);
             const urlParams = new URLSearchParams(new URL(url).search);
-            //console.log(urlParams.get("v"));
             setTrailerUrl(urlParams.get("v"));
           })
           .catch((error) => console.log(error));
