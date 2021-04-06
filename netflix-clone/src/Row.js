@@ -37,10 +37,11 @@ function Row({ title, fetchUrl, isLargeRow }) {
       console.log(response.data.results); */
 
       var i;
-      for (i = 0; i < response.data.results.length; i++) {
-        if (response.data.results[i].type === "Trailer") {
+      var obj = response.data.results;
+      for (i = 0; i < obj.length; i++) {
+        if (obj[i].type === "Trailer" && obj[i].iso_639_1 === "en") {
           //console.log(response.data.results[i].key);
-          return `https://www.youtube.com/watch?v=${response.data.results[i].key}`;
+          return `https://www.youtube.com/watch?v=${obj[i].key}`;
         }
       }
     } catch (error) {
